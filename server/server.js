@@ -8,26 +8,26 @@ const routes = require('./routes')
 const db = require('./config/connection');
 const app = express();
 const PORT = process.env.PORT || 3001;
-// const server = new ApolloServer({
-//   typeDefs,
-//   resolvers,
-//   context: authMiddleware
-// })
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
+  // context: authMiddleware
+})
 
-// server.applyMiddleware({ app })
+server.applyMiddleware({ app })
 
-let server = null;
+// let server = null;
 
-async function startServer() {
-    server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: authMiddleware
-    });
-    await server.start();
-    server.applyMiddleware({ app });
-}
-startServer();
+// async function startServer() {
+//     server = new ApolloServer({
+//         typeDefs,
+//         resolvers,
+//         context: authMiddleware
+//     });
+//     await server.start();
+//     server.applyMiddleware({ app });
+// }
+// startServer();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -39,9 +39,9 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(routes);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'))
+// })
 
 db.once('open', () => {
   app.listen(PORT, () => {
